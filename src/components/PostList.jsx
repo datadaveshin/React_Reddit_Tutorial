@@ -25,11 +25,21 @@ export default class PostList extends Component {
     renderPosts() {
         var key = 0;
         var posts = this.state.posts;
+        var redditData = getFrontPage()
+            .then((redditData) => {
+                this.setState({
+                    posts: redditData.data.children
+                })
+            })
+
+        if (this.state.posts.length === 0) {
+            return <h3>loading</h3>
+        }
 
         var postComponents = posts.map((post) => {
-            return (<Post key={key++} postText={post}/>)
+            var {kind} = post;
+            return (<Post key={key++} postText={post.kind}/>)
         })
-
         return postComponents
     }
 
